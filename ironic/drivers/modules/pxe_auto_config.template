@@ -1,0 +1,7 @@
+default deploy
+
+label deploy
+kernel {{ pxe_options.user_kernel }}
+append initrd={{ pxe_options.user_ramdisk }} ks=http://{{ server_ip }}/auto/{{ UUID }}_auto.cfg
+
+ipappend 2

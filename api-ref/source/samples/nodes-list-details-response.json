@@ -1,0 +1,69 @@
+{
+  "nodes": [
+    {
+      "clean_step": {},
+      "console_enabled": false,
+      "created_at": "2016-08-18T22:28:48.643434+00:00",
+      "driver": "fake",
+      "driver_info": {
+        "ipmi_password": "******",
+        "ipmi_username": "ADMIN"
+      },
+      "driver_internal_info": {
+        "clean_steps": null
+      },
+      "extra": {},
+      "inspection_finished_at": null,
+      "inspection_started_at": null,
+      "instance_info": {},
+      "instance_uuid": null,
+      "last_error": null,
+      "links": [
+        {
+          "href": "http://127.0.0.1:6385/v1/nodes/6d85703a-565d-469a-96ce-30b6de53079d",
+          "rel": "self"
+        },
+        {
+          "href": "http://127.0.0.1:6385/nodes/6d85703a-565d-469a-96ce-30b6de53079d",
+          "rel": "bookmark"
+        }
+      ],
+      "maintenance": false,
+      "maintenance_reason": null,
+      "name": "test_node",
+      "network_interface": "flat",
+      "ports": [
+        {
+          "href": "http://127.0.0.1:6385/v1/nodes/6d85703a-565d-469a-96ce-30b6de53079d/ports",
+          "rel": "self"
+        },
+        {
+          "href": "http://127.0.0.1:6385/nodes/6d85703a-565d-469a-96ce-30b6de53079d/ports",
+          "rel": "bookmark"
+        }
+      ],
+      "power_state": "power off",
+      "properties": {},
+      "provision_state": "available",
+      "provision_updated_at": "2016-08-18T22:28:49.382814+00:00",
+      "raid_config": {},
+      "reservation": null,
+      "resource_class": null,
+      "states": [
+        {
+          "href": "http://127.0.0.1:6385/v1/nodes/6d85703a-565d-469a-96ce-30b6de53079d/states",
+          "rel": "self"
+        },
+        {
+          "href": "http://127.0.0.1:6385/nodes/6d85703a-565d-469a-96ce-30b6de53079d/states",
+          "rel": "bookmark"
+        }
+      ],
+      "target_power_state": null,
+      "target_provision_state": null,
+      "target_raid_config": {},
+      "updated_at": "2016-08-18T22:28:49.653974+00:00",
+      "uuid": "6d85703a-565d-469a-96ce-30b6de53079d"
+    }
+  ]
+}

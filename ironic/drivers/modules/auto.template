@@ -1,0 +1,86 @@
+# System seting
+install
+url --url=http://{{ repo_server_ip }}/rackstack/baremetal/{{ auto_info.os_ver }}/
+lang en_US.UTF-8
+text
+
+# System keyboard
+keyboard us
+
+network --onboot yes --bootproto dhcp --noipv6 --hostname localhost
+
+# Root password
+rootpw --iscrypted $1$vmUshHHD$9XQ7nIb9HbD1B1tmh/4c0/
+authconfig --enableshadow --enablemd5
+
+# Firewall configuation
+firewall --disabled
+
+# SELinux configuration
+selinux --disabled
+
+# System timezone
+timezone Asia/Shanghai
+
+# reboot after installation
+reboot
+
+# Clear the master Boot Record
+zerombr
+
+# bootloader
+bootloader --location=mbr --append="console=tty0 audit=0 selinux=0"
+
+# disk partitioning
+clearpart --all --initlabel
+part /boot --fstype xfs --size=500
+part swap --fstype="swap" --size=8192
+part / --fstype xfs --size=81920
+
+%packages --nobase --ignoremissing
+core
+lldpd
+%end
+
+%post
+
+progress() {
+    curl -H "Content-Type: application/json" -H 'X-OpenStack-Ironic-API-Version: 1.22' -H 'X-Auth-Token: {SHA1}875fc3f0c3613de2a999295616af7db0fced4056' -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST -d "{\"Node\":\"{{ UUID }}\",\"Title\":\"$1\",\"InstallProgress\":$2}" http://{{ server_ip }}:6385/v1/pxeauto/{{ UUID }}
+}
+
+progress "Disable selinux and create grub cfg" 0.6
+
+sed -i -e 's/\(^SELINUX=\).*$/\1disabled/' /etc/selinux/config
+sed -i 's/rhgb quiet//g' /etc/default/grub
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
+progress "Configure management network" 0.8
+
+sed -i 's/localhost/{{ auto_info.hostname }}/g' /etc/hostname
+
+cat > /etc/sysconfig/network <<EOF
+NETWORKING=yes
+HOSTNAME={{ auto_info.hostname }}
+NOZEROCONF=yes
+NETWORKING_IPV6=no
+IPV6INIT=no
+PEERNTP=no
+EOF
+
+cat > /etc/sysconfig/network-scripts/ifcfg-{{ auto_info.management_port }} <<EOF
+DEVICE={{ auto_info.management_port }}
+BOOTPROTO=static
+IPADDR={{ auto_info.management_ip }}
+NETMASK={{ auto_info.management_netmask }}
+GATEWAY={{ auto_info.management_gateway }}
+ONBOOT=yes
+TYPE=Ethernet
+NM_CONTROLLED=no
+EOF
+
+systemctl enable lldpd.service
+
+progress "Finish installation" 1
+
+%end

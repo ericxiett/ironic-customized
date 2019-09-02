@@ -1,0 +1,5 @@
+========
+REST API
+========
+
+The API documentation reference `has been moved here <../dev/webapi.html>`_.
